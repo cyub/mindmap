@@ -1,0 +1,228 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="text/css" http-equiv="Content-Style-Type">
+<title>Learning PHP7 High Performance</title>
+<style type="text/css">span.s1 {background-color: #FFFFFF; color: #000000; font-weight: bold}</style>
+</head>
+<body>
+<h1 align="center" class="root">
+<a name="42f0g70ju4rhe5jpapeqsnr8nb">Learning PHP7 High Performance</a>
+</h1>
+<div align="center" class="globalOverview">
+<img src="Learning PHP7 High Performance_files/images/Learning PHP7 High Performance.jpg"></div>
+<p align="center" class="topicImage">
+<img height="125" src="Learning PHP7 High Performance_files/4i18g76ms9d45b318gtkl6si6g.jpg" width="101"></p>
+<div class="notesContainer">
+<p>Learning PHP7 High Performance</p>
+</div>
+<h2 class="topic">
+<a name="552ds50sphs08ntbpri0pefr3t">服务器优化</a>
+</h2>
+<h3 class="topic">
+<a name="7b07dovf72f243plaecilor66h">&nbsp;Caching static files</a>
+</h3>
+<h3 class="topic">
+<a name="7e24v8vvgo901toogbgcoonkjb">&nbsp;HTTP persistent connection</a>
+</h3>
+<h3 class="topic">
+<a name="3q2kutf0anuqmmf9f01fi968j4">&nbsp;GZIP compression</a>
+</h3>
+<h3 class="topic">
+<a name="4tm0fadm671790btkvcgreda5k">&nbsp;Using PHP as a separate service</a>
+</h3>
+<div class="notesContainer">
+<p>apache使用mod_php会消耗更多服务资源，应该使用PHP-FPM</p>
+</div>
+<h3 class="topic">
+<a name="2ttue141rgirro1qg7l7dss7ss">&nbsp;Disabling unused modules</a>
+</h3>
+<div class="notesContainer">
+<p>查看服务器已有模块(modules)</p>
+<p>apache:sudo apachectl -M</p>
+<p>Nginx:sudo ngxin -v</p>
+</div>
+<h3 class="topic">
+<a name="6i3n0q40rf15lrfvo76vjbcobj">&nbsp;CDN</a>
+</h3>
+<h3 class="topic">
+<a name="1a6msse076n2hj27uekkl6j9cu">&nbsp;Javascript and Css Optimization(Merging and Minifying)</a>
+</h3>
+<h3 class="topic">
+<a name="697vte9go2fdp09gi8tq269iml">&nbsp;Full page caching</a>
+</h3>
+<h3 class="topic">
+<a name="1votm7o1ufrr8q3qssvi93hn8f">&nbsp;&nbsp;Varnish</a>
+</h3>
+<h3 class="topic">
+<a name="6jf34un42il3p6msjp4tbnh5bl">&nbsp;Load balancer (LB)</a>
+</h3>
+<h3 class="topic">
+<a name="49svu6i8c02bjdup9cer4ugjbm">&nbsp;&nbsp;HAProxy load balancing</a>
+</h3>
+<h2 class="topic">
+<a name="2r8sg8tu95080374r00n2h6skl">数据库优化</a>
+</h2>
+<h3 class="topic">
+<a name="3rstisog1uukk6mill4b2kqlg1">&nbsp;Storage engines</a>
+</h3>
+<h3 class="topic">
+<a name="186ad3egmv3rrbtoh3it2a9c96">&nbsp;&nbsp;MyISAM</a>
+</h3>
+<div class="notesContainer">
+<p>&bull; MyISAM is designed for speed, which plays best with the SELECT statement.</p>
+<p>&bull; If a table is more static&mdash;that is, the data in this table is less frequently updated/deleted and mostly only fetched&mdash;then MyISAM is the best option for this table.</p>
+<p>&bull; MyISAM supports table-level locking. If a specific operation needs to be performed on the data in a table, then the complete table can be locked. During this lock, no operations can be performed on this table. This can cause performance degradation if the table is more dynamic&mdash;that is,</p>
+<p>if the data is frequently changed in this table.</p>
+<p>&bull; MyISAM does not have support for foreign keys.</p>
+<p>&bull; MyISAM supports full-text search.</p>
+<p>&bull; MyISAM does not support transactions. So, there is no support for COMMIT and ROLLBACK. If a query on a table is executed, it is executed, and there is no coming back.</p>
+<p>&bull; Data compression, replication, query caching, and data encryption is supported.</p>
+<p>&bull; The cluster database is not supported.</p>
+</div>
+<h3 class="topic">
+<a name="5edb8id478f97alsm3d79tc1g5">&nbsp;&nbsp;InnoDB</a>
+</h3>
+<div class="notesContainer">
+<p>&bull; InnoDB is designed for high reliability and high performance when processing a high volume of data.</p>
+<p>&bull; InnoDB supports row-level locking. It is a good feature and is great for performance. Instead of locking the complete table as with MyISAM, it locks only the specific row for the SELECT, DELETE, or UPDATE operations, and during these operations, other data in this table can be manipulated.</p>
+<p>&bull; InnoDB supports foreign keys and forcing foreign keys constraints.</p>
+<p>&bull; Transactions are supported. COMMIT and ROLLBACK are possible, so data can be recovered from a specific transaction.</p>
+<p>&bull; Data compression, replication, query caching, and data encryption is supported.</p>
+<p>&bull; InnoDB can be used in a cluster environment, but it does not have full support. However, InnoDB tables can be converted to the NDB storage engine, which is used in the MySQL cluster by changing the table engine to NDB.</p>
+</div>
+<h3 class="topic">
+<a name="5j4aq7onrusq01gkgb3frksnhc">&nbsp;&nbsp;&nbsp;innodb_buffer_pool_size</a>
+</h3>
+<div class="notesContainer">
+<p>This setting defines how much memory should be used for InnoDB data and the indices loaded into memory. For a dedicated MySQL server, the recommended value is 50-80% of the installed memory on the server</p>
+</div>
+<h3 class="topic">
+<a name="7lb7uir15oharsv8nn1da2rvp8">&nbsp;&nbsp;&nbsp;innodb_buffer_pool_instances</a>
+</h3>
+<div class="notesContainer">
+<p>This feature is not that widely used. It enables multiple buffer pool instances to work together to reduce the chances of memory contentions on a 64-bit system and with a large value for innodb_buffer_pool_size.</p>
+<p>There are different choices on which the value for innodb_buffer_pool_instances are calculated. One way is to use one instance per GB of innodb_buffer_pool_size. So, if the value of innodb_bufer_pool_size is 16 GB, we will set innodb_buffer_ pool_instances to 16.</p>
+</div>
+<h3 class="topic">
+<a name="3uur7d80s41btr5eqbqld50j2b">&nbsp;&nbsp;&nbsp;innodb_log_file_size</a>
+</h3>
+<div class="notesContainer">
+<p>The innodb_log_file_size is the the size of the log file that stores every query information executed. For a dedicated server, a value up to 4 GB is safe, but the time taken for crash recovery may increase if the log file's size is too large. So, in best practice, it is kept in between 1 and 4 GB.</p>
+</div>
+<h3 class="topic">
+<a name="1ljn6nd7n99bprdgsvr6652tqq">&nbsp;Enable Query caching</a>
+</h3>
+<div class="notesContainer">
+<p>SHOW VARIABLES LIKE 'have_query_cache';</p>
+</div>
+<h3 class="topic">
+<a name="0qb99cql47d08qm9o9kt588qnm">&nbsp;Performance monitoring tools</a>
+</h3>
+<h3 class="topic">
+<a name="2f15i4vu08cah8j87gduvoelv5">&nbsp;&nbsp;phpMyAdmin(Status tab)</a>
+</h3>
+<h3 class="topic">
+<a name="47trrqr8gufbh1j7o793j6gmus">&nbsp;&nbsp;MySQL workbench</a>
+</h3>
+<h3 class="topic">
+<a name="6v21kqu45jr85lermtaoa0lqsk">&nbsp;&nbsp;Percona Toolkit</a>
+</h3>
+<h3 class="topic">
+<a name="1oqm5cqt988c2s7djm7u7ig1eo">&nbsp;&nbsp;&nbsp;pt-query-digest</a>
+</h3>
+<div class="notesContainer">
+<p>This tool analyzes queries from slow, general, and binary log files.</p>
+<p></p>
+<p>
+<span class="s1">Pt-query-digest /var/log/mysql/mysql-slow.log</span>
+</p>
+<p></p>
+</div>
+<h3 class="topic">
+<a name="1m3v7374idkat498s43se9ir2u">&nbsp;&nbsp;&nbsp;pt-duplicate-key-checker</a>
+</h3>
+<div class="notesContainer">
+<p>This tool finds duplicate indices and duplicate foreign keys either in a set of specified tables or in a complete database</p>
+<p></p>
+<p>
+<span class="s1">Pt-duplicate-key-checker &ndash;user packt &ndash;password dbPassword &ndash;database</span>
+</p>
+<p>
+<span class="s1">packt_pub</span>
+</p>
+</div>
+<h3 class="topic">
+<a name="6j6ceivr8edtiflka7il9fpsuq">&nbsp;&nbsp;&nbsp;Pt-variable-advisor</a>
+</h3>
+<div class="notesContainer">
+<p>This tool displays MySQL config information and advice for each query.</p>
+<p>
+<span class="s1">Pt-variable-advisor &ndash;user packt &ndash;password DbPassword localhost</span>
+</p>
+</div>
+<h2 class="topic">
+<a name="1l28mk84mt93o3jfaicfcs8tts">PHP程序Debuging与Profiling</a>
+</h2>
+<h3 class="topic">
+<a name="4shhmsacbsrhi9e9b1jmpmonfj">&nbsp;Xdebug</a>
+</h3>
+<h3 class="topic">
+<a name="7horhbndm2vqgkjkenseffv6qu">&nbsp;Debugging with Sublime Text( Xdebug Client package)</a>
+</h3>
+<h3 class="topic">
+<a name="79m3hr8n78hd1m6h561n1qb6bq">&nbsp;Profiling with Xdebug</a>
+</h3>
+<div class="notesContainer">
+<p>配置：</p>
+<p>xdebug.profiler_enable=on</p>
+<p> 
+</p>
+<p>xdebug.profiler_output_dir=/var/xdebug/profiler/</p>
+<p></p>
+<p>日志查看分析工具</p>
+<p>1.webgrind</p>
+<p>2.PHP Storm</p>
+</div>
+<h3 class="topic">
+<a name="2ev16er2hf6c4p7nkhjijthk7h">&nbsp;PHP DebugBar</a>
+</h3>
+<div class="notesContainer">
+<p>maximebf/debugbar</p>
+</div>
+<h2 class="topic">
+<a name="48ef7ebodllb1nf8p0a2dttude">压力测试(Stree/Load)</a>
+</h2>
+<h3 class="topic">
+<a name="3vdh19kojc7ukn9qkapqmr8udq">&nbsp;Apache JMeter</a>
+</h3>
+<h3 class="topic">
+<a name="1go24as3p0mr37ogihgru30ijb">&nbsp;ApacheBench (ab)</a>
+</h3>
+<h3 class="topic">
+<a name="15p2cfrkeijvea8a9701rqf2h9">&nbsp;Siege</a>
+</h3>
+<h2 class="topic">
+<a name="3fa8npu9jm4ne4jd577opo1tra">PHP程序最佳实践</a>
+</h2>
+<h3 class="topic">
+<a name="58gikeds9ed7nu67etnhq6jhej">&nbsp;Coding styles</a>
+</h3>
+<div class="notesContainer">
+<p>PSR-1 and PSR-4 standard</p>
+</div>
+<h3 class="topic">
+<a name="47n3de5uj8d3i5b6ngo5utaj6r">&nbsp;Test-driven development (TDD)</a>
+</h3>
+<h3 class="topic">
+<a name="4l7ccips8o0snl4dtsph1h3g2a">&nbsp;Design patterns</a>
+</h3>
+<h3 class="topic">
+<a name="2v05kvjr7o4j4235o21lgmlung">&nbsp;Service-oriented architecture (SOA)</a>
+</h3>
+<h3 class="topic">
+<a name="6qh7d59j1uqi1todbje4h9ekqu">&nbsp;Deployment and Continuous Integration (CI)</a>
+</h3>
+</body>
+</html>
